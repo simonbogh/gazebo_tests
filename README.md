@@ -63,8 +63,13 @@ ODE spec: http://sdformat.org/spec?elem=collision&ver=1.4
 
 # Notes learnt
 
-A inertia matrix diagonal terms that goes lower than mass / 1000.0 makes the item slide (w/ ground at least).
+A inertia matrix diagonal terms that goes lower than mass / 1000.0 makes the item unstable (w/ ground at least).
+Using standard inertia matrix for cubes, cylinders or spheres works good enough. I made a [little program to compute them](https://gist.github.com/awesomebytes/39a4ba6c64956a1aa9bd).
 
 KP minimum 10000. The tinier... it does not converge on getting onto a static position. Also, it must affect joint elements in gazebo, simple objects may be less affected by it (to be proven).
 
 SOFT_CFM and SOFT_ERP dont do anything. Gazebo Physics CFM and ERP can be tuned online from the Gazebo GUI client. They seem to slow down or not let two items in contact converge in a static position.
+
+mu and mu2 are (as the documentation states) in between [0.0..1.0], anything over 1.0 will be truncated to 1.0, infinite friction (like ground_plane).
+
+fdir1 3 element vector, are x y z, in local frame. There is some info in [this gazebo answers](http://answers.gazebosim.org/question/1512/what-do-the-friction-coefficients-mean-and-why-are-they-so-large-in-the-drcsim-atlas-urdf-files/).
