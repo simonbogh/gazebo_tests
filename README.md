@@ -64,3 +64,7 @@ ODE spec: http://sdformat.org/spec?elem=collision&ver=1.4
 # Notes learnt
 
 A inertia matrix diagonal terms that goes lower than mass / 1000.0 makes the item slide (w/ ground at least).
+
+KP minimum 10000. The tinier... it does not converge on getting onto a static position. Also, it must affect joint elements in gazebo, simple objects may be less affected by it (to be proven).
+
+SOFT_CFM and SOFT_ERP dont do anything. Gazebo Physics CFM and ERP can be tuned online from the Gazebo GUI client. They seem to slow down or not let two items in contact converge in a static position.
