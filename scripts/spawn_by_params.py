@@ -10,7 +10,6 @@ from geometry_msgs.msg import Pose, Point, Quaternion
 from dynamic_reconfigure.server import Server
 from gazebo_tests.cfg import ModelSpawnConfig
 from cube_template import sdf_template
-from ramp_template import sdf_ramp_template
 
 
 class CubeSpawner(object):
@@ -22,13 +21,10 @@ class CubeSpawner(object):
             '/gazebo/delete_model', DeleteModel)
         self.delete_srv.wait_for_service()
         self.template = sdf_template
-        self.ramp_template = sdf_ramp_template
         self.initial_pose = Pose()
-        self.initial_pose.position.x = 2.0
-        self.initial_pose.position.y = 2.0
-        self.initial_pose.position.z = 2.0
-        self.ramp_pose = deepcopy(self.initial_pose)
-        self.ramp_pose.position.z = 0.0
+        self.initial_pose.position.x = 0.25
+        self.initial_pose.position.y = 0.02
+        self.initial_pose.position.z = 0.05
         self.curr_cfg = None
         self.dyn_rec = Server(ModelSpawnConfig, self.callback)
 
@@ -38,9 +34,6 @@ class CubeSpawner(object):
         if config["click_to_spawn_model"]:
             config["click_to_spawn_model"] = False
             self.spawn_current_model()
-        if config["click_to_spawn_ramp"]:
-             config["click_to_spawn_ramp"] = False
-             self.spawn_ramp()
         return config
 
     def get_updated_template(self):
@@ -85,46 +78,17 @@ class CubeSpawner(object):
         resp = self.delete_srv.call(del_req)
         rospy.loginfo("Resp of delete: " + str(resp))
 
-    def call_delete_ramp(self):
-        rospy.loginfo("Deleting ramp")
-        del_req = DeleteModelRequest()
-        del_req.model_name = "ramp"
-        resp = self.delete_srv.call(del_req)
-        rospy.loginfo("Resp of delete: " + str(resp))
 
     def spawn_current_model(self):
         self.call_delete()
         rospy.sleep(1.0)
+        self.initial_pose.position.x = self.curr_cfg["POSEX_"]
+        self.initial_pose.position.y = self.curr_cfg["POSEY_"]
+        self.initial_pose.position.z = self.curr_cfg["POSEZ_"]
         req = self.create_req(str(self.curr_cfg["MODELNAME_"]),
                               self.get_updated_template(),
                               self.initial_pose)
         self.call(req)
-
-    def spawn_ramp(self):
-        self.call_delete_ramp()
-        rospy.sleep(1.0)
-        ori = quaternion_from_euler(0.0, radians(self.curr_cfg["DEGREESRAMP"]), 0.0)
-        self.ramp_pose.orientation = Quaternion(*ori)
-        req = self.create_req("ramp",
-                              self.get_updated_ramp_template(),
-                              self.ramp_pose)
-        self.call(req)
-
-    def get_updated_ramp_template(self):
-        template = deepcopy(self.ramp_template)
-        toreplace = ["MURAMP_", "MU2RAMP_",
-                     "FDIR1XRAMP_", "FDIR1YRAMP_", "FDIR1ZRAMP_",
-                     "SLIP1RAMP_", "SLIP2RAMP_",
-                     "SOFT_CFMRAMP_", "SOFT_ERPRAMP_",
-                     "KPRAMP_", "KDRAMP_",
-                     "MINDEPTHRAMP_", "MAXVELRAMP_"]
-        for tag in toreplace:
-            template = template.replace("_" + tag, str(self.curr_cfg[tag]))
-        # Degrees
-        rad_inclination = radians(self.curr_cfg["DEGREESRAMP"])
-        template = template.replace("_PITCHRAMP_", str(rad_inclination))
-        rospy.loginfo("Replaced ramp template:" + str(template))
-        return template
 
 
 if __name__ == '__main__':
