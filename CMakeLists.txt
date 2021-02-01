@@ -7,6 +7,7 @@ project(gazebo_tests)
 find_package(catkin REQUIRED COMPONENTS
   rospy
   dynamic_reconfigure
+  gazebo_ros
 )
 
 ## System dependencies are found with CMake's conventions
@@ -101,7 +102,10 @@ catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES gazebo_tests
 #  CATKIN_DEPENDS rospy
-#  DEPENDS system_lib
+  CATKIN_DEPENDS
+    gazebo_msgs
+    gazebo_plugins
+    gazebo_ros
 )
 
 ###########
