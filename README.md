@@ -16,10 +16,12 @@ Enable spawning of box and ramp
 $ rosrun gazebo_tests spawn_by_params.py
 ```
 
-Open RQT Dynamic Reconfigure to spawn new boxes with different physics parameters
+Open RQT Dynamic Reconfigure to spawn new boxes with different physics parameters. Set the parameters you would like to test and press the checkbox `clcik_to_spawn_model` to spawn a box.
 ```sh
 $ rosrun rqt_reconfigure rqt_reconfigure
 ```
+
+![](docs/rqt_dynamic_reconfigure.png)
 
 **_Optional:_**
 
