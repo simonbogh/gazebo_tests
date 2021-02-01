@@ -30,7 +30,10 @@ Automatic loop through one parameter multiplying by 10
 $ rosrun gazebo_tests loop_parameter_example.py
 ```
 
+![](docs/loop_parameters.png)
+
 ## Gazebo world properties
+---
 http://gazebosim.org/tutorials?tut=modifying_world
 
 In the World tab, select the physics item. A list of physics properties will be displayed in the list box below.
