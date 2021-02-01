@@ -1,5 +1,33 @@
 # Learning about Gazebo physics
 
+This package lets you test different physics parameters in Gazebo to give you a better understanding of how they change the simulation e.g. friction parameters.
+
+![](docs/box_ramp_slide.gif)
+
+## How to run
+---
+Launch Gazebo with and empty world
+```sh
+$ roslaunch gazebo_tests empty_gazebo.launch
+```
+
+Enable spawning of box and ramp
+```sh
+$ rosrun gazebo_tests spawn_by_params.py
+```
+
+Open RQT Dynamic Reconfigure to spawn new boxes with different physics parameters
+```sh
+$ rosrun rqt_reconfigure rqt_reconfigure
+```
+
+**_Optional:_**
+
+Automatic loop through one parameter multiplying by 10
+```sh
+$ rosrun gazebo_tests loop_parameter_example.py
+```
+
 ## Gazebo world properties
 http://gazebosim.org/tutorials?tut=modifying_world
 
