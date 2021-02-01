@@ -2,6 +2,8 @@
 
 This package lets you test different physics parameters in Gazebo to give you a better understanding of how they change the simulation e.g. friction parameters.
 
+Additional videos demonstrating the effect of some of the physics parameters can be found here: http://gazebosim.org/tutorials?tut=physics_params
+
 ![](docs/box_ramp_slide.gif)
 
 ## How to run
